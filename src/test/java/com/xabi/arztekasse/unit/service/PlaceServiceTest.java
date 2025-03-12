@@ -92,8 +92,6 @@ class PlaceServiceTest {
         assertThat(result.businessHours().get(5).hours().getFirst().status()).isEqualTo(BusinessStatus.CLOSED);
         assertThat(result.businessHours().get(6).hours().getFirst().status()).isEqualTo(BusinessStatus.CLOSED);
 
-
-
     }
 
     @Test

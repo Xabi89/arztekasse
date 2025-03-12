@@ -1,7 +1,6 @@
 package com.xabi.arztekasse.integration;
 
 import com.xabi.arztekasse.controller.dto.PlaceDetailResponse;
-import com.xabi.arztekasse.controller.dto.PlaceOverviewResponse;
 import com.xabi.arztekasse.controller.dto.PlaceDetailsDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,7 @@ class PlaceControllerIT {
                         "/api/v1/places/1",
                         HttpMethod.GET,
                         null,
-                        new ParameterizedTypeReference<PlaceDetailResponse>() {}
+                        new ParameterizedTypeReference<>() {}
                 );
 
         // Then

@@ -1,6 +1,5 @@
 package com.xabi.arztekasse.unit.controller;
 
-
 import com.xabi.arztekasse.controller.PlaceController;
 import com.xabi.arztekasse.controller.dto.PlaceDetailsDto;
 import com.xabi.arztekasse.exception.NotFoundException;
