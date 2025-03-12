@@ -4,10 +4,11 @@ This application provides a list of places and their business hours. There are t
 
 1. getAllPlaces – Retrieves all places in the system.
         Typically, you’d fetch a list of places and pick an ID from that list.
-2.  getPlaceById – Retrieves detailed information (including business hours) for a specific place.
+2.  getPlaceById – Retrieves detailed information (including business hours) for a specific place, can be filter to retrieve
+    only the open days of the business
 
 ## Api Contract
-The api contract once you have run the application can be found
+Once you have run the application, you can be found the api-contract in this url
 http://localhost:8080/swagger-ui/index.html#
 http://localhost:8080/v3/api-docs - to generate the client if required
 
@@ -27,8 +28,8 @@ Version control in the URL (e.g. /api/v1/places) allows us to migrate to newer A
 All API responses are wrapped in a data field. This structure eases future features like pagination or links, since we 
 can simply add more fields alongside data.
 
-Our endpoint to retrieve the places by Id, it has an optional parameter 'includedCloseDays' in case we want to see the
-days the business is closed. By default, the value is false which means only the days the business is open will be returned.
+Our endpoint to retrieve the places by Id, it has an optional parameter 'onlyOpenHours' in case we want to filter the
+days our business is open. By default, the value is false which means all the days the business will be returned.
 
 Aggregating consecutive days that share identical hours seems very client-specific. If the business changes this requirement, 
 the backend code must be updated, which potentially could impact all consumers.

@@ -55,7 +55,7 @@ class PlaceServiceTest {
     }
 
     @Test
-    void getPlaceById_shouldReturnPlaceDetailsOnlyOpenHours() {
+    void getPlaceById_shouldReturnPlaceDetailsOnlyOpenDays() {
         // Given
         Place mockPlace = Place.builder()
                 .id(1L)
@@ -77,7 +77,7 @@ class PlaceServiceTest {
         when(placeRepository.findById(1L)).thenReturn(Optional.of(mockPlace));
 
         // When
-        PlaceDetailsDto result = placeService.getPlaceById(1L, false);
+        PlaceDetailsDto result = placeService.getPlaceById(1L, true);
 
         // Then
         assertThat(result.id()).isEqualTo(1L);
@@ -89,7 +89,7 @@ class PlaceServiceTest {
 
     }
    @Test
-    void getPlaceById_shouldReturnPlaceDetailsIncludeCloseDays() {
+    void getPlaceById_shouldReturnPlaceDetailsAllDays() {
         // Given
         Place mockPlace = Place.builder()
                 .id(1L)
@@ -111,7 +111,7 @@ class PlaceServiceTest {
         when(placeRepository.findById(1L)).thenReturn(Optional.of(mockPlace));
 
         // When
-        PlaceDetailsDto result = placeService.getPlaceById(1L, true);
+        PlaceDetailsDto result = placeService.getPlaceById(1L, false);
 
         // Then
         assertThat(result.id()).isEqualTo(1L);

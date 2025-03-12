@@ -56,7 +56,8 @@ public class PlaceController {
                                     - `5` → Friday
                                     - `6` → Saturday
                                     - `7` → Sunday
-                    Optional parameter includeClosedDays - default value "FALSE" to see close days of the place
+                    Optional parameter onlyOpenDays - default value "FALSE" to see all days of the place. True to filter
+                    only the open days
                     """
     )
     @ApiResponses({
@@ -67,8 +68,8 @@ public class PlaceController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content())
     })
     @GetMapping("/{placeId}")
-    public PlaceDetailResponse getPlaceById(@PathVariable("placeId") long placeId, @RequestParam(value = "includeClosedDays", defaultValue = "false") boolean includeClosedDays){
+    public PlaceDetailResponse getPlaceById(@PathVariable("placeId") long placeId, @RequestParam(value = "onlyOpenDays", defaultValue = "false") boolean onlyOpenDays){
         log.info("Fetching place with ID {}", placeId);
-        return new PlaceDetailResponse(placeService.getPlaceById(placeId,includeClosedDays));
+        return new PlaceDetailResponse(placeService.getPlaceById(placeId,onlyOpenDays));
     }
 }
