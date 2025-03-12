@@ -9,6 +9,7 @@ This application provides a list of places and their business hours. There are t
 ## Api Contract
 The api contract once you have run the application can be found
 http://localhost:8080/swagger-ui/index.html#
+http://localhost:8080/v3/api-docs - to generate the client if required
 
 ## Code Structure
 The code follows an MVC pattern, as well as the Single Responsibility Principle, e.g. the GlobalExceptionHandler handles all exceptions in a centralized manner.
