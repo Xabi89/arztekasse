@@ -34,7 +34,7 @@ class PlaceControllerTest {
         PlaceDetailsDto mockPlace = new PlaceDetailsDto(1L, "Test", "Address", null);
 
         // When
-        when(placeService.getPlaceById(1)).thenReturn(mockPlace);
+        when(placeService.getPlaceById(1, false)).thenReturn(mockPlace);
 
         // Perform GET request
         mockMvc.perform(get("/api/v1/places/1")
@@ -45,7 +45,7 @@ class PlaceControllerTest {
     @Test
     void getPlaceById_shouldReturn404_whenPlaceNotFound() throws Exception {
         // Given
-        when(placeService.getPlaceById(999))
+        when(placeService.getPlaceById(999, false))
                 .thenThrow(new NotFoundException("Place with ID 999 not found"));
 
         // When

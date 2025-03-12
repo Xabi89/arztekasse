@@ -10,9 +10,15 @@
 			"name": "PlacesById",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/places/:id",
+					"raw": "http://localhost:8080/api/v1/places/:id?includeClosedDays=true",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -23,6 +29,12 @@
 						"v1",
 						"places",
 						":id"
+					],
+					"query": [
+						{
+							"key": "includeClosedDays",
+							"value": "true"
+						}
 					],
 					"variable": [
 						{

@@ -54,8 +54,42 @@ class PlaceServiceTest {
         assertThat(item.location()).isEqualTo("Test A");
     }
 
+    @Test
+    void getPlaceById_shouldReturnPlaceDetailsOnlyOpenHours() {
+        // Given
+        Place mockPlace = Place.builder()
+                .id(1L)
+                .label("Test A")
+                .location("Address A")
+                .openingHours(List.of(
+                        OpeningHours.builder()
+                                .dayOfWeek(1)
+                                .startTime(LocalTime.now())
+                                .endTime(LocalTime.now().plusHours(2)).build(),
+                        OpeningHours.builder()
+                                .dayOfWeek(2)
+                                .startTime(LocalTime.now())
+                                .endTime(LocalTime.now()
+                                        .plusHours(2)).build()
+                ))
+                .build();
+
+        when(placeRepository.findById(1L)).thenReturn(Optional.of(mockPlace));
+
+        // When
+        PlaceDetailsDto result = placeService.getPlaceById(1L, false);
+
+        // Then
+        assertThat(result.id()).isEqualTo(1L);
+        assertThat(result.label()).isEqualTo("Test A");
+        assertThat(result.location()).isEqualTo("Address A");
+        assertThat(result.businessHours().get(0).hours().getFirst().status()).isEqualTo(BusinessStatus.OPEN);
+        assertThat(result.businessHours().get(1).hours().getFirst().status()).isEqualTo(BusinessStatus.OPEN);
+        assertThat(result.businessHours().size()).isEqualTo(2);
+
+    }
    @Test
-    void getPlaceById_shouldReturnPlaceDetails() {
+    void getPlaceById_shouldReturnPlaceDetailsIncludeCloseDays() {
         // Given
         Place mockPlace = Place.builder()
                 .id(1L)
@@ -77,7 +111,7 @@ class PlaceServiceTest {
         when(placeRepository.findById(1L)).thenReturn(Optional.of(mockPlace));
 
         // When
-        PlaceDetailsDto result = placeService.getPlaceById(1L);
+        PlaceDetailsDto result = placeService.getPlaceById(1L, true);
 
         // Then
         assertThat(result.id()).isEqualTo(1L);
@@ -99,7 +133,7 @@ class PlaceServiceTest {
         // Given
         when(placeRepository.findById(999L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> placeService.getPlaceById(999L))
+        assertThatThrownBy(() -> placeService.getPlaceById(999L, false))
                 .isInstanceOf(NotFoundException.class);
 
     }

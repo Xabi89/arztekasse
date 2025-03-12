@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -55,6 +56,7 @@ public class PlaceController {
                                     - `5` → Friday
                                     - `6` → Saturday
                                     - `7` → Sunday
+                    Optional parameter includeClosedDays - default value "FALSE" to see close days of the place
                     """
     )
     @ApiResponses({
@@ -65,8 +67,8 @@ public class PlaceController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content())
     })
     @GetMapping("/{placeId}")
-    public PlaceDetailResponse getPlaceById(@PathVariable("placeId") long placeId){
+    public PlaceDetailResponse getPlaceById(@PathVariable("placeId") long placeId, @RequestParam(value = "includeClosedDays", defaultValue = "false") boolean includeClosedDays){
         log.info("Fetching place with ID {}", placeId);
-        return new PlaceDetailResponse(placeService.getPlaceById(placeId));
+        return new PlaceDetailResponse(placeService.getPlaceById(placeId,includeClosedDays));
     }
 }

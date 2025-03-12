@@ -27,9 +27,8 @@ Version control in the URL (e.g. /api/v1/places) allows us to migrate to newer A
 All API responses are wrapped in a data field. This structure eases future features like pagination or links, since we 
 can simply add more fields alongside data.
 
-On Aggregating Days
-If we don’t have any business hours for a particular day, the backend populates that day with a CLOSED status to ensure consistency.
-This could also be made optional depending on the business requirements, it will require a bigger understanding of the application.
+Our endpoint to retrieve the places by Id, it has an optional parameter 'includedCloseDays' in case we want to see the
+days the business is closed. By default, the value is false which means only the days the business is open will be returned.
 
 Aggregating consecutive days that share identical hours seems very client-specific. If the business changes this requirement, 
 the backend code must be updated, which potentially could impact all consumers.

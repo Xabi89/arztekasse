@@ -30,14 +30,14 @@ public class PlaceService {
                .map(it-> new PlaceOverviewDto(it.getId(), it.getLabel(), it.getLocation()))
                .toList();
     }
-    public PlaceDetailsDto getPlaceById(long placeId) {
+    public PlaceDetailsDto getPlaceById(long placeId, boolean includeCloseDays) {
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(() -> {
                     log.error("Place with ID {} not found", placeId);
                     return new NotFoundException("Place ID: " + placeId + " not found");
                 });
 
-        List<BusinessHoursDto> businessHoursDto = groupOpeningHours(place.getOpeningHours());
+        List<BusinessHoursDto> businessHoursDto = groupOpeningHours(place.getOpeningHours(), includeCloseDays);
 
         return new PlaceDetailsDto(
                 place.getId(),
@@ -47,25 +47,28 @@ public class PlaceService {
         );
     }
 
-    private List<BusinessHoursDto> groupOpeningHours(List<OpeningHours> openingHours) {
+    private List<BusinessHoursDto> groupOpeningHours(List<OpeningHours> openingHours, boolean includeCloseDays) {
         Map<Integer, List<HoursDto>> groupedHours = new HashMap<>();
 
         for (OpeningHours bh : openingHours) {
             groupedHours
                     .computeIfAbsent(bh.getDayOfWeek(), k -> new ArrayList<>())
                     .add(new HoursDto(
+                            bh.getId(),
                             bh.getStartTime(),
                             bh.getEndTime(),
                             BusinessStatus.OPEN
                     ));
         }
 
-        for (int day = 1; day <= 7; day++) {
-            // If we don't have an entry in our db, setup as close for that day
-            if (!groupedHours.containsKey(day)) {
-                groupedHours.put(day, List.of(
-                        new HoursDto(null, null, BusinessStatus.CLOSED)
-                ));
+        if(includeCloseDays) {
+            for (int day = 1; day <= 7; day++) {
+                // If we don't have an entry in our db, setup as close for that day
+                if (!groupedHours.containsKey(day)) {
+                    groupedHours.put(day, List.of(
+                            new HoursDto(null, null, null, BusinessStatus.CLOSED)
+                    ));
+                }
             }
         }
 
